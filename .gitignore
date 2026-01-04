@@ -26,3 +26,4 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.angular/cache/21.0.2/tareas/.tsbuildinfo
