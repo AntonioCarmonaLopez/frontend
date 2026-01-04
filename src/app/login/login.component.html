@@ -1,0 +1,64 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Iniciar Sesión</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="username" class="form-label">Usuario</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="username"
+                formControlName="username"
+                placeholder="Ingrese su usuario"
+                [class.is-invalid]="loginForm.controls.username.touched && loginForm.controls.username.invalid">
+              @if (loginForm.controls.username.touched && loginForm.controls.username.invalid) {
+                <div class="invalid-feedback">
+                  El usuario es obligatorio
+                </div>
+              }
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password"
+                formControlName="password"
+                placeholder="Ingrese su contraseña"
+                [class.is-invalid]="loginForm.controls.password.touched && loginForm.controls.password.invalid">
+              @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+                <div class="invalid-feedback">
+                  La contraseña es obligatoria
+                </div>
+              }
+            </div>
+
+            @if (errorMessage) {
+              <div class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+              </div>
+            }
+
+            <button 
+              type="submit" 
+              class="btn btn-primary w-100"
+              [disabled]="loginForm.invalid || isLoading">
+              @if (isLoading) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Iniciando sesión...
+              } @else {
+                Iniciar Sesión
+              }
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

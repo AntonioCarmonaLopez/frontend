@@ -1,0 +1,162 @@
+<div style="position: absolute; top: 0px; right: 10px;">
+  <app-home></app-home>
+</div>
+
+<h2 class="text-center">Listado de Tareas</h2>
+
+<div style="display: flex; gap: 20px; margin-bottom: 20px;">
+  <!-- Columna Pendiente -->
+  <div style="flex: 1;">
+    <h3>Pendiente</h3>
+    <table border="1" style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Fecha</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (tarea of tareas; track tarea.id) {
+          @if (tarea.estado === 'ACEPTADA') {
+            <tr>
+              <td>{{ tarea.titulo }}</td>
+              <td>{{ tarea.descripcion }}</td>
+              <td>{{ tarea.fechaCreacion | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+              <td>
+                <button (click)="openPopup('Editar',tarea)" class="btn btn-primary btn-sm">Editar</button>
+                <button class="btn btn-danger btn-sm" (click)="borrarTarea(tarea.id)">Borrar</button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Columna En Progreso -->
+  <div style="flex: 1;">
+    <h3>En Progreso</h3>
+    <table border="1" style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Fecha</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (tarea of tareas; track tarea.id) {
+          @if (tarea.estado === 'EN_CURSO') {
+            <tr>
+              <td>{{ tarea.titulo }}</td>
+              <td>{{ tarea.descripcion }}</td>
+              <td>{{ tarea.fechaCreacion | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+              <td>
+                <button (click)="openPopup('Editar',tarea)" class="btn btn-primary btn-sm">Editar</button>
+                <button class="btn btn-danger btn-sm" (click)="borrarTarea(tarea.id)">Borrar</button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Columna Completada -->
+  <div style="flex: 1;">
+    <h3>Completada</h3>
+    <table border="1" style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Fecha</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (tarea of tareas; track tarea.id) {
+          @if (tarea.estado === 'FINALIZADA') {
+            <tr>
+              <td>{{ tarea.titulo }}</td>
+              <td>{{ tarea.descripcion }}</td>
+              <td>{{ tarea.fechaCreacion | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+              <td>
+                <button (click)="openPopup('Editar',tarea)" class="btn btn-primary btn-sm">Editar</button>
+                <button class="btn btn-danger btn-sm" (click)="borrarTarea(tarea.id)">Borrar</button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<button style="margin: 50px; padding: 10px" type="button" class="btn btn-primary"
+  (click)="openPopup('Insertar',tareaVacia)">Insertar tarea
+</button>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ titulo }}</h4>
+      </div>
+      <!-- formulario -->
+      <div class="container mt-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">{{ subTitulo }}</h4>
+          </div>
+
+          <div class="card-body">
+            <form [formGroup]="form" (ngSubmit)="guardarTarea('Insertar')">
+  <div class="mb-3">
+    <label class="form-label">Título</label>
+    <input type="text" class="form-control" formControlName="titulo" placeholder="Título de la tarea">
+    @if (form.get('titulo')?.touched && form.get('titulo')?.invalid) {
+    <div class="text-danger">
+      El título es obligatorio
+    </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Descripción</label>
+    <textarea class="form-control" rows="3" formControlName="descripcion"></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Fecha</label>
+    <input type="date" class="form-control" formControlName="fechaCreacion">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Estado</label>
+    <select class="form-select" formControlName="estado">
+      <option value="" disabled>Selecciona un estado</option>
+      <option value="ACEPTADA">Pendiente</option>
+      <option value="EN_CURSO">En progreso</option>
+      <option value="FINALIZADA">Completada</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary w-100">
+    {{ modoEdicion ? 'Actualizar Tarea' : 'Crear Tarea' }}
+  </button>
+</form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="closePopup()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
