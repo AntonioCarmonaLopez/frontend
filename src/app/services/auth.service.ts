@@ -36,6 +36,8 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('authToken');
+    this.http.post('/api/auth/logout', {}, { withCredentials: true })
+
   }
 
   isLoggedIn(): boolean {
